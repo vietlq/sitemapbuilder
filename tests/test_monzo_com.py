@@ -4,6 +4,8 @@
 
 from html.parser import HTMLParser
 
+#TODO: Use current location + <A:href> to get fully qualified URLs
+
 
 class UrlHtmlParser(HTMLParser):
     """HTML parser that extracts URLs from <A> tags"""
@@ -13,8 +15,6 @@ class UrlHtmlParser(HTMLParser):
         self.temp_urls = []
 
     def handle_starttag(self, tag, attrs):
-        print("Encountered a start tag:", tag)
-        print("The attributes: ", attrs)
         if tag.lower() == 'a':
             for attr in attrs:
                 if attr[0] == 'href':
