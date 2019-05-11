@@ -82,5 +82,26 @@ def test_bad_scheme():
         parser.parse_html_with_url(a_ftps_monzo, "ftps://monzo.com/")
 
 
+def test_skip_non_http_https():
+    """Test that the parser skips http or https links"""
+    parser = UrlHtmlParser()
+    # Test against fpts:
+    a_ftps_monzo = '''<a href="ftps://monzo.com/up/">some FTP</a>'''
+    parser.parse_html_with_url(a_ftps_monzo, "https://monzo.com/")
+    assert parser.temp_urls == []
+    # Test against mailto:
+    a_mailto_monzo = '''<a href="mailto:callme@maybe.com">Call me maybe</a>'''
+    parser.parse_html_with_url(a_mailto_monzo, "https://monzo.com/")
+    assert parser.temp_urls == []
+    # Test against http:
+    a_http_monzo = '''<a href="http://monzo.com">Monzo</a>'''
+    parser.parse_html_with_url(a_http_monzo, "https://monzo.com/")
+    assert parser.temp_urls == ['http://monzo.com']
+    # Test against https:
+    a_https_monzo = '''<a href="https://github.com/vietlq/">Viet's GitHub</a>'''
+    parser.parse_html_with_url(a_https_monzo, "https://monzo.com/")
+    assert parser.temp_urls == ['http://monzo.com', 'https://github.com/vietlq/']
+
+
 if __name__ == '__main__':
     print(parse_monzo_com())
