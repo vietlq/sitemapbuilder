@@ -105,5 +105,19 @@ def test_skip_non_http_https():
         'https://github.com/vietlq/'}
 
 
+def test_no_duplicated_urls():
+    """Test that the parser does not produce duplicated URLs"""
+    parser = UrlHtmlParser()
+    a_http_monzo = '''
+    <a style="display: none;" href="https://monzo.com/business">Monzo</a>
+    <a id="again" href="https://monzo.com/business">Again</a>
+    <a class="perfect" href="https://monzo.com/business">More</a>
+    <a href="https://monzo.com/business">Even more</a>
+    <a href="https://monzo.com/business">Yeah, one more time</a>
+    '''
+    parser.parse_html_with_url(a_http_monzo, "https://monzo.com/")
+    assert parser.temp_urls == {'https://monzo.com/business'}
+
+
 if __name__ == '__main__':
     print(parse_monzo_com())
