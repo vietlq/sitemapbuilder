@@ -29,7 +29,7 @@ def split_content_type(content_type_str):
     return None, None
 
 
-def is_content_type_valid(content_type_str):
+def is_content_type_supported(content_type_str):
     """Validate Content-Type string"""
     content_type, charset = split_content_type(content_type_str)
     return content_type and charset \
