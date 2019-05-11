@@ -37,7 +37,8 @@ class UrlHtmlParser(HTMLParser):
                 if attr[0] == 'href':
                     temp_url = attr[1]
                     new_url = urljoin(self.url, temp_url)
-                    self.temp_urls.append(new_url)
+                    if is_scheme_http_https(new_url):
+                        self.temp_urls.append(new_url)
 
     def handle_endtag(self, tag):
         pass
@@ -76,10 +77,10 @@ def test_is_scheme_http_https():
 def test_bad_scheme():
     """Test parser against bad schemes (not http or https)"""
     parser = UrlHtmlParser()
+    a_ftps_monzo = '''<a href="ftps://monzo.com/up/">some FTP</a>'''
+    parser.parse_html_with_url(a_ftps_monzo, "https://monzo.com/")
     with pytest.raises(Exception):
-        parser.parse_html_with_url(
-            '''<a href="ftps://monzo.com/up/">some FTP</a>''',
-            "ftps://monzo.com/")
+        parser.parse_html_with_url(a_ftps_monzo, "ftps://monzo.com/")
 
 
 if __name__ == '__main__':
