@@ -20,7 +20,7 @@ class UrlHtmlParser(HTMLParser):
 
     def __init__(self):
         super().__init__()
-        self.temp_urls = []
+        self.temp_urls = set()
         self.url = None
 
     def parse_html_with_url(self, html_str, url):
@@ -37,7 +37,7 @@ class UrlHtmlParser(HTMLParser):
                 if tag_name == 'href':
                     new_url = urljoin(self.url, tag_val)
                     if is_scheme_http_https(new_url):
-                        self.temp_urls.append(new_url)
+                        self.temp_urls.add(new_url)
 
     def handle_endtag(self, tag):
         pass
@@ -61,7 +61,7 @@ def parse_monzo_com():
 
 def test_parse_monzo_com():
     """Test URL extraction when parsing cached HTML file"""
-    assert(parse_monzo_com() == ['https://monzo.com/', 'https://monzo.com/about', 'https://monzo.com/blog', 'https://monzo.com/community', 'https://monzo.com/help', 'https://monzo.com/download', 'https://monzo.com/business', 'https://app.adjust.com/ydi27sn?engagement_type=fallback_click', 'https://app.adjust.com/9mq4ox7?engagement_type=fallback_click', 'https://www.theguardian.com/technology/2017/dec/17/monzo-facebook-of-banking', 'https://www.telegraph.co.uk/personal-banking/current-accounts/monzo-atom-revolut-starling-everything-need-know-digital-banks/', 'https://www.thetimes.co.uk/article/tom-blomfield-the-man-who-made-monzo-g8z59dr8n', 'https://www.standard.co.uk/tech/monzo-prepaid-card-current-accounts-challenger-bank-a3805761.html', 'https://monzo.com/features/apple-pay', 'https://monzo.com/features/google-pay', 'https://monzo.com/features/travel', 'https://www.fscs.org.uk/', 'https://monzo.com/features/switch', 'https://monzo.com/features/overdrafts', 'https://app.adjust.com/ydi27sn?engagement_type=fallback_click', 'https://app.adjust.com/9mq4ox7?engagement_type=fallback_click', 'https://monzo.com/cdn-cgi/l/email-protection#e8808d8498a88587869287c68b8785', 'https://monzo.com/community', 'https://app.adjust.com/ydi27sn?engagement_type=fallback_click', 'https://app.adjust.com/9mq4ox7?engagement_type=fallback_click', 'https://monzo.com/about', 'https://monzo.com/blog', 'https://monzo.com/press', 'https://monzo.com/careers', 'https://web.monzo.com', 'https://monzo.com/community', 'https://monzo.com/community/making-monzo', 'https://monzo.com/transparency', 'https://monzo.com/blog/how-money-works', 'https://monzo.com/tone-of-voice', 'https://monzo.com/business', 'https://monzo.com/faq', 'https://monzo.com/legal/terms-and-conditions', 'https://monzo.com/legal/fscs-information', 'https://monzo.com/legal/privacy-policy', 'https://monzo.com/legal/cookie-policy', 'https://monzo.com/information-about-current-account-services', 'https://app.adjust.com/ydi27sn?engagement_type=fallback_click', 'https://app.adjust.com/9mq4ox7?engagement_type=fallback_click', 'https://twitter.com/monzo', 'https://www.instagram.com/monzo', 'https://www.facebook.com/monzobank', 'https://www.linkedin.com/company/monzo-bank', 'https://www.youtube.com/monzobank', 'https://monzo.com/cdn-cgi/l/email-protection#c6aea3aab686aba9a8bca9e8a5a9ab'])
+    assert(parse_monzo_com() == {'https://monzo.com/', 'https://monzo.com/about', 'https://monzo.com/blog', 'https://monzo.com/community', 'https://monzo.com/help', 'https://monzo.com/download', 'https://monzo.com/business', 'https://app.adjust.com/ydi27sn?engagement_type=fallback_click', 'https://app.adjust.com/9mq4ox7?engagement_type=fallback_click', 'https://www.theguardian.com/technology/2017/dec/17/monzo-facebook-of-banking', 'https://www.telegraph.co.uk/personal-banking/current-accounts/monzo-atom-revolut-starling-everything-need-know-digital-banks/', 'https://www.thetimes.co.uk/article/tom-blomfield-the-man-who-made-monzo-g8z59dr8n', 'https://www.standard.co.uk/tech/monzo-prepaid-card-current-accounts-challenger-bank-a3805761.html', 'https://monzo.com/features/apple-pay', 'https://monzo.com/features/google-pay', 'https://monzo.com/features/travel', 'https://www.fscs.org.uk/', 'https://monzo.com/features/switch', 'https://monzo.com/features/overdrafts', 'https://app.adjust.com/ydi27sn?engagement_type=fallback_click', 'https://app.adjust.com/9mq4ox7?engagement_type=fallback_click', 'https://monzo.com/cdn-cgi/l/email-protection#e8808d8498a88587869287c68b8785', 'https://monzo.com/community', 'https://app.adjust.com/ydi27sn?engagement_type=fallback_click', 'https://app.adjust.com/9mq4ox7?engagement_type=fallback_click', 'https://monzo.com/about', 'https://monzo.com/blog', 'https://monzo.com/press', 'https://monzo.com/careers', 'https://web.monzo.com', 'https://monzo.com/community', 'https://monzo.com/community/making-monzo', 'https://monzo.com/transparency', 'https://monzo.com/blog/how-money-works', 'https://monzo.com/tone-of-voice', 'https://monzo.com/business', 'https://monzo.com/faq', 'https://monzo.com/legal/terms-and-conditions', 'https://monzo.com/legal/fscs-information', 'https://monzo.com/legal/privacy-policy', 'https://monzo.com/legal/cookie-policy', 'https://monzo.com/information-about-current-account-services', 'https://app.adjust.com/ydi27sn?engagement_type=fallback_click', 'https://app.adjust.com/9mq4ox7?engagement_type=fallback_click', 'https://twitter.com/monzo', 'https://www.instagram.com/monzo', 'https://www.facebook.com/monzobank', 'https://www.linkedin.com/company/monzo-bank', 'https://www.youtube.com/monzobank', 'https://monzo.com/cdn-cgi/l/email-protection#c6aea3aab686aba9a8bca9e8a5a9ab'})
 
 
 def test_is_scheme_http_https():
@@ -88,21 +88,21 @@ def test_skip_non_http_https():
     # Test against fpts:
     a_ftps_monzo = '''<a href="ftps://monzo.com/up/">some FTP</a>'''
     parser.parse_html_with_url(a_ftps_monzo, "https://monzo.com/")
-    assert parser.temp_urls == []
+    assert parser.temp_urls == set()
     # Test against mailto:
     a_mailto_monzo = '''<a href="mailto:callme@maybe.com">Call me maybe</a>'''
     parser.parse_html_with_url(a_mailto_monzo, "https://monzo.com/")
-    assert parser.temp_urls == []
+    assert parser.temp_urls == set()
     # Test against http:
     a_http_monzo = '''<a href="http://monzo.com">Monzo</a>'''
     parser.parse_html_with_url(a_http_monzo, "https://monzo.com/")
-    assert parser.temp_urls == ['http://monzo.com']
+    assert parser.temp_urls == {'http://monzo.com'}
     # Test against https:
     a_https_monzo = '<a href="https://github.com/vietlq/">Viet\'s GitHub</a>'
     parser.parse_html_with_url(a_https_monzo, "https://monzo.com/")
-    assert parser.temp_urls == [
+    assert parser.temp_urls == {
         'http://monzo.com',
-        'https://github.com/vietlq/']
+        'https://github.com/vietlq/'}
 
 
 if __name__ == '__main__':
