@@ -6,7 +6,7 @@ help:
 	@echo "style            Run style check (flake8)"
 
 lint:
-	pylint tests
+	pylint src tests
 
 style:
-	flake8 tests
+	flake8 src tests
