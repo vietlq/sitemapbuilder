@@ -98,9 +98,11 @@ def test_skip_non_http_https():
     parser.parse_html_with_url(a_http_monzo, "https://monzo.com/")
     assert parser.temp_urls == ['http://monzo.com']
     # Test against https:
-    a_https_monzo = '''<a href="https://github.com/vietlq/">Viet's GitHub</a>'''
+    a_https_monzo = '<a href="https://github.com/vietlq/">Viet\'s GitHub</a>'
     parser.parse_html_with_url(a_https_monzo, "https://monzo.com/")
-    assert parser.temp_urls == ['http://monzo.com', 'https://github.com/vietlq/']
+    assert parser.temp_urls == [
+        'http://monzo.com',
+        'https://github.com/vietlq/']
 
 
 if __name__ == '__main__':
