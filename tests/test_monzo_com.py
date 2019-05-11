@@ -53,8 +53,8 @@ class UrlHtmlParser(HTMLParser):
 def parse_monzo_com():
     """Parse static HTML that was retrieved from https://monzo.com"""
     parser = UrlHtmlParser()
-    with open('tests/test_monzo_com.html', 'rb') as fh:
-        monzo_com_html = fh.read().decode('utf-8')
+    with open('tests/test_monzo_com.html', 'rb') as file_handle:
+        monzo_com_html = file_handle.read().decode('utf-8')
     parser.parse_html_with_url(monzo_com_html, "https://monzo.com/")
     return parser.temp_urls
 
