@@ -33,10 +33,9 @@ class UrlHtmlParser(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         if tag.lower() == 'a':
-            for attr in attrs:
-                if attr[0] == 'href':
-                    temp_url = attr[1]
-                    new_url = urljoin(self.url, temp_url)
+            for tag_name, tag_val in attrs:
+                if tag_name == 'href':
+                    new_url = urljoin(self.url, tag_val)
                     if is_scheme_http_https(new_url):
                         self.temp_urls.append(new_url)
 
