@@ -18,4 +18,5 @@ venv:
 	@echo "deactivate"
 	@echo "rm -rf _venv"
 	@echo "virtualenv -p python3 _venv"
+	@echo "source _venv/bin/activate"
 	@echo "pip install -r requirements.txt"
