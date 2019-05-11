@@ -8,10 +8,10 @@ class MyHTMLParser(HTMLParser):
         print("The attributes: ", attrs)
 
     def handle_endtag(self, tag):
-        print("Encountered an end tag :", tag)
+        pass
 
     def handle_data(self, data):
-        print("Encountered some data  :", data)
+        pass
 
 parser = MyHTMLParser()
 with open('tests/test_monzo_com.html', 'rb') as fh:
