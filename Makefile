@@ -1,4 +1,4 @@
-.PHONY: help lint style venv
+.PHONY: help lint style clean venv
 
 help:
 	@echo "help             Show this help"
@@ -10,3 +10,12 @@ lint:
 
 style:
 	flake8 src tests
+
+clean:
+	rm -rf .pytest_cache/ .cache/
+
+venv:
+	@echo "deactivate"
+	@echo "rm -rf _venv"
+	@echo "virtualenv -p python3 _venv"
+	@echo "pip install -r requirements.txt"

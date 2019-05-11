@@ -2,3 +2,4 @@ _venv
 .cache
 .vscode
 __pycache__
+*.pyc
