@@ -13,6 +13,10 @@ style:
 
 clean:
 	rm -rf .pytest_cache/ .cache/
+	find src -name __pycache__ -exec rm -rf {} \;
+	find src -name *.pyc -exec rm -rf {} \;
+	find tests -name __pycache__ -exec rm -rf {} \;
+	find tests -name *.pyc -exec rm -rf {} \;
 
 venv:
 	@echo "deactivate"
