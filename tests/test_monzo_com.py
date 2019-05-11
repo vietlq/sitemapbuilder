@@ -3,7 +3,10 @@
 """Test sitemap builder against monzo.com"""
 
 from html.parser import HTMLParser
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
+import pytest
+
+ERR_STR_BAD_SCHEME = "Bad scheme. Expected http(s)"
 
 
 class UrlHtmlParser(HTMLParser):
@@ -17,6 +20,9 @@ class UrlHtmlParser(HTMLParser):
     def parse_html_with_url(self, html_str, url):
         """Parse HTML and URL is given as a hint for building fully
         qualified URLs from hyper-links."""
+        result = urlparse(url)
+        if result.scheme not in ['http', 'https']:
+            raise Exception(ERR_STR_BAD_SCHEME)
         self.url = url
         super().feed(html_str)
 
@@ -51,6 +57,12 @@ def parse_monzo_com():
 def test_parse_monzo_com():
     """Test URL extraction when parsing cached HTML file"""
     assert(parse_monzo_com() == ['https://monzo.com/', 'https://monzo.com/about', 'https://monzo.com/blog', 'https://monzo.com/community', 'https://monzo.com/help', 'https://monzo.com/download', 'https://monzo.com/business', 'https://app.adjust.com/ydi27sn?engagement_type=fallback_click', 'https://app.adjust.com/9mq4ox7?engagement_type=fallback_click', 'https://www.theguardian.com/technology/2017/dec/17/monzo-facebook-of-banking', 'https://www.telegraph.co.uk/personal-banking/current-accounts/monzo-atom-revolut-starling-everything-need-know-digital-banks/', 'https://www.thetimes.co.uk/article/tom-blomfield-the-man-who-made-monzo-g8z59dr8n', 'https://www.standard.co.uk/tech/monzo-prepaid-card-current-accounts-challenger-bank-a3805761.html', 'https://monzo.com/features/apple-pay', 'https://monzo.com/features/google-pay', 'https://monzo.com/features/travel', 'https://www.fscs.org.uk/', 'https://monzo.com/features/switch', 'https://monzo.com/features/overdrafts', 'https://app.adjust.com/ydi27sn?engagement_type=fallback_click', 'https://app.adjust.com/9mq4ox7?engagement_type=fallback_click', 'https://monzo.com/cdn-cgi/l/email-protection#e8808d8498a88587869287c68b8785', 'https://monzo.com/community', 'https://app.adjust.com/ydi27sn?engagement_type=fallback_click', 'https://app.adjust.com/9mq4ox7?engagement_type=fallback_click', 'https://monzo.com/about', 'https://monzo.com/blog', 'https://monzo.com/press', 'https://monzo.com/careers', 'https://web.monzo.com', 'https://monzo.com/community', 'https://monzo.com/community/making-monzo', 'https://monzo.com/transparency', 'https://monzo.com/blog/how-money-works', 'https://monzo.com/tone-of-voice', 'https://monzo.com/business', 'https://monzo.com/faq', 'https://monzo.com/legal/terms-and-conditions', 'https://monzo.com/legal/fscs-information', 'https://monzo.com/legal/privacy-policy', 'https://monzo.com/legal/cookie-policy', 'https://monzo.com/information-about-current-account-services', 'https://app.adjust.com/ydi27sn?engagement_type=fallback_click', 'https://app.adjust.com/9mq4ox7?engagement_type=fallback_click', 'https://twitter.com/monzo', 'https://www.instagram.com/monzo', 'https://www.facebook.com/monzobank', 'https://www.linkedin.com/company/monzo-bank', 'https://www.youtube.com/monzobank', 'https://monzo.com/cdn-cgi/l/email-protection#c6aea3aab686aba9a8bca9e8a5a9ab'])
+
+
+def test_bad_scheme():
+    parser = UrlHtmlParser()
+    with pytest.raises(Exception):
+        parser.parse_html_with_url('''<a href="ftps://monzo.com/upload/">some FTP</a>''', "ftps://monzo.com/")
 
 
 if __name__ == '__main__':
