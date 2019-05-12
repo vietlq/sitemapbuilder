@@ -52,6 +52,7 @@ class UrlHtmlParser(HTMLParser):
             raise Exception(ERR_STR_BAD_SCHEME)
         self.url = url
         super().feed(html_str)
+        return self.temp_urls
 
     def handle_starttag(self, tag, attrs):
         if tag.lower() == 'a':
