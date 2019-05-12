@@ -37,3 +37,6 @@ def fetch_and_extract_links(url, fetcher=requests):
 # 3. map<url, set<url>> - key is the original URL and value
 # is set of URLs being pointed at from that URL
 # 4. decay - passed recursively/tagged with url; stop visiting when decay = 0
+# do not add to recorded if decay = 0; message queue should have decay;
+# add to map even the target url has decay = 0
+# 5. filter - only initial domain/hostname, make it as cmd arg
