@@ -5,3 +5,4 @@
 * https://stackoverflow.com/a/55266330/128028
 * https://stackoverflow.com/questions/1112343/how-do-i-capture-sigint-in-python
 * https://stackoverflow.com/a/10972804/128028
+* https://stackoverflow.com/a/24338247/128028

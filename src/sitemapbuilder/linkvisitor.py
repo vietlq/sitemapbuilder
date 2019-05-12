@@ -128,7 +128,7 @@ class LinkVisitor():
             # If a new URL detected, add it
             # If the same URL has new higher decay, add it
             if (url not in self.recorded) or \
-                (url in self.recorded and self.recorded[url] < decay):
+               (url in self.recorded and self.recorded[url] < decay):
                 self.recorded[url] = decay
                 tmp_next_links = fetch_and_extract_links(url)
                 next_links = []
