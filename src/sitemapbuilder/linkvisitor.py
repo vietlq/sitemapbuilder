@@ -1,11 +1,13 @@
 """Visits links within certain depth and certain (sub)domain."""
 
+import ipaddress
 import logging
 import time
 from threading import Thread, Lock
 import queue
-import requests
 import socket
+from urllib.parse import urlparse
+import requests
 import urllib3
 from .urlhtmlparser import UrlHtmlParser
 from .urlhtmlparser import is_content_type_supported
@@ -36,8 +38,8 @@ def fetch_and_extract_links(url, fetcher=requests):
         html_content = response.text
         return parser.parse_html_with_url(html_content, response.url)
     except (socket.timeout,
-        urllib3.exceptions.ReadTimeoutError,
-        requests.exceptions.ReadTimeout):
+            urllib3.exceptions.ReadTimeoutError,
+            requests.exceptions.ReadTimeout):
         msg = "Timed out when requesting URL [%s]" % response.url
         logging.getLogger("LinkVisitor").warning(msg)
         return set()
@@ -64,6 +66,29 @@ def fetch_and_extract_links(url, fetcher=requests):
 # 6.8. => if the queue is empty, sleep 10s to wait for more items then return
 
 
+class SameHostnameFilter():
+    """Only passes URLs with the same predefined hostname"""
+    def __init__(self, seed_url):
+        self.seed_url = seed_url
+        hostname = str(urlparse(seed_url).hostname)
+        try:
+            _ = ipaddress.ip_address(hostname)
+            self.hostnames = [hostname]
+        except ValueError:
+            if hostname.startswith('www.'):
+                self.hostnames = [hostname, hostname[4:]]
+            else:
+                parts = hostname.split('.')
+                self.hostnames = [hostname]
+                if len(parts) == 2:
+                    self.hostnames.append('www.%s' % hostname)
+
+    def validate(self, url):
+        """Validate if URL matches given hostname"""
+        hostname = str(urlparse(url).hostname)
+        return hostname in self.hostnames
+
+
 class LinkVisitor():
     """Encapsulates link visiting crawler"""
     def __init__(self, seed_url, decay, domain_filter, num_workers=5):
@@ -77,12 +102,9 @@ class LinkVisitor():
         self.should_do = True
         self.threads = []
         self.mutex = Lock()
-        for _ in range(num_workers):
-            worker_thread = Thread(target=self.do_work, args=(self,))
-            worker_thread.start()
-            self.threads.append(worker_thread)
 
     def do_work(self, *args, **kwargs):
+        """Worked thread function"""
         while self.should_do:
             self.mutex.acquire()
             if self.queue.empty():
@@ -91,7 +113,8 @@ class LinkVisitor():
                 continue
             url, decay = self.queue.get()
             print("processing URL [%s] with [decay=%d]" % (url, decay))
-            if decay > 0 and ((url not in self.recorded) or
+            if decay > 0 and (
+                    (url not in self.recorded) or
                     (url in self.recorded and self.recorded[url] < decay)):
                 self.recorded[url] = decay
                 next_links = fetch_and_extract_links(url)
@@ -100,13 +123,27 @@ class LinkVisitor():
                 if decay > 1:
                     for link in next_links:
                         link_tuple = (link, decay - 1)
-                        self.queue.put(link_tuple)
-                        print("added URL [%s] with [decay=%d]" % link_tuple)
+                        if self.domain_filter.validate(link):
+                            self.queue.put(link_tuple)
+                            print("added URL [%s] with [decay=%d]"
+                                  % link_tuple)
+                        else:
+                            print("skipped URL [%s] with [decay=%d]"
+                                  % link_tuple)
             self.mutex.release()
 
     def start(self):
+        """Create threads, add seed url to start the process"""
+        # Create the threads
+        self.threads = []
+        for _ in range(self.num_workers):
+            worker_thread = Thread(target=self.do_work, args=(self,))
+            worker_thread.start()
+            self.threads.append(worker_thread)
+        # Add seed URL to the queue
         self.mutex.acquire()
         self.queue.put((self.seed_url, self.decay))
         self.mutex.release()
+        # Wait for the threads to finish
         for worker_thread in self.threads:
             worker_thread.join()
