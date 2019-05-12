@@ -10,3 +10,4 @@
 * https://stackoverflow.com/questions/39577984/what-is-pkg-resources-0-0-0-in-output-of-pip-freeze-command
 * https://stackoverflow.com/a/26539947/128028
 * https://setuptools.readthedocs.io/en/latest/setuptools.html#using-find-packages
+* https://packaging.python.org/guides/single-sourcing-package-version/

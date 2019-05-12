@@ -6,16 +6,13 @@
 
 from setuptools import setup, find_packages
 import codecs
-import sys
-from pathlib import Path
-import os
 
 with codecs.open('README.rst', 'r', 'utf-8') as fd:
     long_description = fd.read()
 
 setup(
     name='sitemapbuilder',
-    version='0.0.1',
+    version='0.0.2',
     description='Simple sitemap builder',
     long_description=long_description,
     author='Viet Le',
