@@ -1,5 +1,8 @@
 """Visits links within certain depth and certain (sub)domain."""
 
+import time
+from threading import Thread, Lock
+import queue
 import requests
 from .urlhtmlparser import UrlHtmlParser
 from .urlhtmlparser import is_content_type_supported
@@ -46,6 +49,40 @@ def fetch_and_extract_links(url, fetcher=requests):
 # 6.3. => filter by decay > 0 and not in recorded
 # 6.4. => process url
 # 6.5. => update map
-# 6.6. => filter urls
+# 6.6. => filter urls by recorded, domain name
 # 6.7. => push list of (url, decay - 1) into mq
 # 6.8. => if the queue is empty, sleep 10s to wait for more items then return
+
+
+class LinkVisitor():
+    """Encapsulates link visiting crawler"""
+    def __init__(self, seed_url, domain_filter, num_workers=5):
+        self.seed_url = seed_url
+        self.domain_filter = domain_filter
+        self.num_workers = num_workers
+        self.recorded = set()
+        self.sitemap = dict()
+        self.queue = queue.Queue()
+        self.should_do = True
+        self.threads = []
+        self.mutex = Lock()
+        for _ in range(num_workers):
+            worker_thread = Thread(target=self.do_work, args=(self,))
+            worker_thread.start()
+            self.threads.append(worker_thread)
+
+    def do_work(self, *args, **kwargs):
+        while self.should_do:
+            self.mutex.acquire()
+            if self.queue.empty():
+                self.mutex.release()
+                time.sleep(1)
+                continue
+            url, decay = self.queue.get()
+            if decay > 0 and (url not in self.recorded):
+                self.recorded.add(url)
+            self.mutex.release()
+
+    def start(self):
+        for worker_thread in self.threads:
+            worker_thread.join()
