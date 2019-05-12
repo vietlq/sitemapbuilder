@@ -136,6 +136,11 @@ class LinkVisitor():
                     else:
                         print("skipped URL [%s]" % link)
                 # Now update the calling map between links
+                if url in self.sitemap:
+                    for link in next_links:
+                        self.sitemap[url].add(link)
+                else:
+                    self.sitemap[url] = set(next_links)
                 # Avoid adding links with decay = 0
                 if decay > 1:
                     for link in next_links:
