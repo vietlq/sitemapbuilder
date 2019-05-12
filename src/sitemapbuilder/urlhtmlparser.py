@@ -58,7 +58,10 @@ class UrlHtmlParser(HTMLParser):
         if tag.lower() == 'a':
             for tag_name, tag_val in attrs:
                 if tag_name == 'href':
+                    # Convert relative URL to absolute
                     new_url = urljoin(self.url, tag_val)
+                    # NOTE: We do not handle fragments!!
+                    new_url = new_url.split('#')[0]
                     if is_scheme_http_https(new_url):
                         self.temp_urls.add(new_url)
 
