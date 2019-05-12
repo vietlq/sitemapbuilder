@@ -3,16 +3,19 @@
 import requests
 from .urlhtmlparser import UrlHtmlParser
 from .urlhtmlparser import is_content_type_supported
+from .urlhtmlparser import is_scheme_http_https
 
 
 def is_url_content_type_http(url, fetcher=requests):
     """Send HEAD request and verify if the URL has valid Content-Type"""
+    if not is_scheme_http_https(url):
+        return False
     result = fetcher.head(url, allow_redirects=True, timeout=5)
     content_type_keys = [
         key for key in result.headers.keys()
         if key.strip().lower() == 'content-type']
     if not content_type_keys:
-        return None
+        return False
     return is_content_type_supported(content_type_keys[0])
 
 
