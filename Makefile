@@ -12,11 +12,11 @@ style:
 	flake8 src tests
 
 clean:
-	rm -rf .pytest_cache/ .cache/
-	find src -name __pycache__ -exec rm -rf {} \;
-	find src -name *.pyc -exec rm -rf {} \;
-	find tests -name __pycache__ -exec rm -rf {} \;
-	find tests -name *.pyc -exec rm -rf {} \;
+	rm -rf .pytest_cache/ .cache/ .tox/ || true
+	find src -name __pycache__ -exec rm -rf {} \; || true
+	find src -name *.pyc -exec rm -rf {} \; || true
+	find tests -name __pycache__ -exec rm -rf {} \; || true
+	find tests -name *.pyc -exec rm -rf {} \; || true
 
 venv:
 	@echo "deactivate"

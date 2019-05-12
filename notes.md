@@ -6,3 +6,7 @@
 * https://stackoverflow.com/questions/1112343/how-do-i-capture-sigint-in-python
 * https://stackoverflow.com/a/10972804/128028
 * https://stackoverflow.com/a/24338247/128028
+* https://stackoverflow.com/questions/3108285/in-python-script-how-do-i-set-pythonpath
+* https://stackoverflow.com/questions/39577984/what-is-pkg-resources-0-0-0-in-output-of-pip-freeze-command
+* https://stackoverflow.com/a/26539947/128028
+* https://setuptools.readthedocs.io/en/latest/setuptools.html#using-find-packages

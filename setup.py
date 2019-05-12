@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+
+# Read https://github.com/django-extensions/django-extensions/issues/92
+# Read: http://setuptools.readthedocs.io/en/latest/setuptools.html
+# Look for find_packages, packages, package_dir
+
+from setuptools import setup, find_packages
+import codecs
+import sys
+from pathlib import Path
+import os
+
+with codecs.open('README.rst', 'r', 'utf-8') as fd:
+    long_description = fd.read()
+
+setup(
+    name='sitemapbuilder',
+    version='0.0.1',
+    description='Simple sitemap builder',
+    long_description=long_description,
+    author='Viet Le',
+    author_email='vietlq85@gmail.com',
+    url='https://github.com/vietlq/sitemapbuilder',
+    install_requires=['requests'],
+    package_dir={'': 'src'},
+    packages=find_packages(where='src'),
+    scripts=['tools/sitemapbuilder'],
+    keywords=['sitemapbuilder sitemap builder http'],
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Environment :: Console',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Topic :: Software Development :: Libraries :: Python Modules'
+    ])
