@@ -4,7 +4,7 @@
 
 import pytest
 from sitemapbuilder import UrlHtmlParser
-from sitemapbuilder import is_scheme_http_https
+from sitemapbuilder.urlhtmlparser import is_scheme_http_https
 from sitemapbuilder.urlhtmlparser import is_charset_supported
 from sitemapbuilder.urlhtmlparser import is_content_type_supported
 
