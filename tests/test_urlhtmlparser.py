@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
-"""Test sitemap builder against monzo.com"""
+"""Test UrlHtmlParser and related utility functions"""
 
 import pytest
 from sitemapbuilder import UrlHtmlParser
 from sitemapbuilder import is_scheme_http_https
+from sitemapbuilder.urlhtmlparser import is_charset_supported
+from sitemapbuilder.urlhtmlparser import is_content_type_supported
 
 
 def parse_monzo_com():
@@ -76,6 +78,27 @@ def test_no_duplicated_urls():
     '''
     parser.parse_html_with_url(a_http_monzo, "https://monzo.com/")
     assert parser.temp_urls == {'https://monzo.com/business'}
+
+
+def test_is_charset_supported():
+    """Test is_charset_supported"""
+    assert is_charset_supported('us-ascii')
+    assert is_charset_supported('utf-8')
+    assert is_charset_supported('US-ASCII')
+    assert is_charset_supported('UTF-8')
+    assert not is_charset_supported('iso-646')
+    assert not is_charset_supported('KOI8-R')
+
+
+def test_is_content_type_supported():
+    "Test is_content_type_supported"
+    assert is_content_type_supported("text/html; charset=us-ascii")
+    assert is_content_type_supported("text/html; charset=US-ASCII")
+    assert is_content_type_supported("text/html; charset=utf-8")
+    assert is_content_type_supported("text/html; charset=UTF-8")
+    assert not is_content_type_supported("text/html")
+    assert not is_content_type_supported("text/html; charset=iso-646")
+    assert not is_content_type_supported("text/html; charset=KOI8-R")
 
 
 if __name__ == '__main__':
