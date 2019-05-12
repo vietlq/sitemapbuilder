@@ -128,19 +128,20 @@ class LinkVisitor():
             if (url not in self.recorded) or \
                 (url in self.recorded and self.recorded[url] < decay):
                 self.recorded[url] = decay
-                next_links = fetch_and_extract_links(url)
+                tmp_next_links = fetch_and_extract_links(url)
+                next_links = []
+                for link in tmp_next_links:
+                    if self.domain_filter.validate(link):
+                        next_links.append(link)
+                    else:
+                        print("skipped URL [%s]" % link)
                 # Now update the calling map between links
                 # Avoid adding links with decay = 0
                 if decay > 1:
                     for link in next_links:
                         link_tuple = (link, decay - 1)
-                        if self.domain_filter.validate(link):
-                            self.queue.put(link_tuple)
-                            print("added URL [%s] with [decay=%d]"
-                                  % link_tuple)
-                        else:
-                            print("skipped URL [%s] with [decay=%d]"
-                                  % link_tuple)
+                        self.queue.put(link_tuple)
+                        print("added URL [%s] with [decay=%d]" % link_tuple)
             self.mutex.release()
 
     def start(self):
