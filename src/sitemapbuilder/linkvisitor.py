@@ -71,7 +71,7 @@ class LinkVisitor():
         self.decay = decay
         self.domain_filter = domain_filter
         self.num_workers = num_workers
-        self.recorded = set()
+        self.recorded = dict()
         self.sitemap = dict()
         self.queue = queue.Queue()
         self.should_do = True
@@ -91,11 +91,13 @@ class LinkVisitor():
                 continue
             url, decay = self.queue.get()
             print("processing URL [%s] with [decay=%d]" % (url, decay))
-            if decay > 0 and (url not in self.recorded):
-                self.recorded.add(url)
+            if decay > 0 and ((url not in self.recorded) or
+                    (url in self.recorded and self.recorded[url] < decay)):
+                self.recorded[url] = decay
                 for link in fetch_and_extract_links(url):
                     self.queue.put((link, decay - 1))
-                    print("adding URL [%s] with [decay=%d]" % (link, decay - 1))
+                    print("adding URL [%s] with [decay=%d]"
+                        % (link, decay - 1))
             self.mutex.release()
 
     def start(self):
