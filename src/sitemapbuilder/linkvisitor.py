@@ -16,7 +16,7 @@ def is_url_content_type_http(url, fetcher=requests):
         if key.strip().lower() == 'content-type']
     if not content_type_keys:
         return False
-    return is_content_type_supported(content_type_keys[0])
+    return is_content_type_supported(result.headers[content_type_keys[0]])
 
 
 def fetch_and_extract_links(url, fetcher=requests):
