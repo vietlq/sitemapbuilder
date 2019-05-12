@@ -12,7 +12,7 @@ with codecs.open('README.rst', 'r', 'utf-8') as fd:
 
 setup(
     name='sitemapbuilder',
-    version='0.0.2',
+    version='0.0.3',
     description='Simple sitemap builder',
     long_description=long_description,
     author='Viet Le',
