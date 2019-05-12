@@ -92,7 +92,9 @@ class SameHostnameFilter():
 class LinkVisitor():
     """Encapsulates link visiting crawler"""
     def __init__(self, seed_url, decay, domain_filter, num_workers=5,
-                 max_retries=50):
+                 retries_per_worker=10):
+        assert num_workers > 0
+        assert retries_per_worker > 1
         self.seed_url = seed_url
         self.decay = decay
         self.domain_filter = domain_filter
@@ -100,9 +102,9 @@ class LinkVisitor():
         self.recorded = dict()
         self.sitemap = dict()
         self.queue = queue.Queue()
-        self.max_retries = max_retries
+        self.max_retries = num_workers * retries_per_worker
         self.should_do = True
-        self.retries = max_retries
+        self.retries = self.max_retries
         self.threads = []
         self.mutex = Lock()
 
