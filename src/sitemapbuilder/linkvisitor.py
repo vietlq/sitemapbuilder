@@ -30,3 +30,10 @@ def fetch_and_extract_links(url, fetcher=requests):
         return parser.parse_html_with_url(html_content, response.url)
     except Exception:
         return set()
+
+# TODO: Add the following data structures
+# 1. recorded - set of recorded links to avoid double fetching
+# 2. message queue - new and unique links are added to the end of the queue
+# 3. map<url, set<url>> - key is the original URL and value
+# is set of URLs being pointed at from that URL
+# 4. decay - passed recursively/tagged with url; stop visiting when decay = 0
