@@ -91,7 +91,8 @@ class SameHostnameFilter():
 
 class LinkVisitor():
     """Encapsulates link visiting crawler"""
-    def __init__(self, seed_url, decay, domain_filter, num_workers=5):
+    def __init__(self, seed_url, decay, domain_filter, num_workers=5,
+                 max_retries=50):
         self.seed_url = seed_url
         self.decay = decay
         self.domain_filter = domain_filter
@@ -99,18 +100,23 @@ class LinkVisitor():
         self.recorded = dict()
         self.sitemap = dict()
         self.queue = queue.Queue()
+        self.max_retries = max_retries
         self.should_do = True
+        self.retries = max_retries
         self.threads = []
         self.mutex = Lock()
 
     def do_work(self, *args, **kwargs):
         """Worked thread function"""
-        while self.should_do:
+        while self.should_do and self.retries > 0:
             self.mutex.acquire()
             if self.queue.empty():
+                self.retries -= 1
+                print("empty queue; retries left: %d" % self.retries)
                 self.mutex.release()
                 time.sleep(1)
                 continue
+            self.retries = self.max_retries
             url, decay = self.queue.get()
             print("processing URL [%s] with [decay=%d]" % (url, decay))
             if decay > 0 and (
@@ -134,16 +140,22 @@ class LinkVisitor():
 
     def start(self):
         """Create threads, add seed url to start the process"""
+        # Add seed URL to the queue
+        self.mutex.acquire()
+        self.queue.put((self.seed_url, self.decay))
+        self.mutex.release()
         # Create the threads
         self.threads = []
         for _ in range(self.num_workers):
             worker_thread = Thread(target=self.do_work, args=(self,))
             worker_thread.start()
             self.threads.append(worker_thread)
-        # Add seed URL to the queue
-        self.mutex.acquire()
-        self.queue.put((self.seed_url, self.decay))
-        self.mutex.release()
         # Wait for the threads to finish
         for worker_thread in self.threads:
             worker_thread.join()
+
+    def stop(self):
+        """Stop processing the queue, but allow in-progress items to finish"""
+        self.mutex.acquire()
+        self.should_do = False
+        self.mutex.release()
