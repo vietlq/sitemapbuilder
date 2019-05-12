@@ -46,7 +46,7 @@ def fetch_and_extract_links(url, fetcher=requests):
     except Exception:
         return set()
 
-# TODO: Add the following data structures
+# NOTE: The following data structures are used:
 # 1. recorded - set of recorded links to avoid double fetching
 # 2. message queue - new and unique links are added to the end of the queue
 # 3. map<url, set<url>> - key is the original URL and value
@@ -55,15 +55,15 @@ def fetch_and_extract_links(url, fetcher=requests):
 # do not add to recorded if decay = 0; message queue should have decay;
 # add to map even the target url has decay = 0
 # 5. filter - only initial domain/hostname, make it as cmd arg
-# 6. process in the sequence:
-# 6.1. => init: (url, decay) mq
-# 6.2. => acquire lock
-# 6.3. => filter by decay > 0 and not in recorded
-# 6.4. => process url
-# 6.5. => update map
-# 6.6. => filter urls by recorded, domain name
-# 6.7. => push list of (url, decay - 1) into mq
-# 6.8. => if the queue is empty, sleep 10s to wait for more items then return
+# NOTE: Sitemap builder is running the algo:
+# 1. => init: (url, decay) mq
+# 2. => acquire lock
+# 3. => filter by decay > 0 and not in recorded
+# 4. => process url
+# 5. => update map
+# 6. => filter urls by recorded, domain name
+# 7. => push list of (url, decay - 1) into mq
+# 8. => if the queue is empty, sleep 10s to wait for more items then return
 
 
 class SameHostnameFilter():
@@ -141,7 +141,7 @@ class LinkVisitor():
                         self.sitemap[url].add(link)
                 else:
                     self.sitemap[url] = set(next_links)
-                # Avoid adding links with decay = 0
+                # Avoid adding links with decay <= 0
                 if decay > 1:
                     for link in next_links:
                         link_tuple = (link, decay - 1)
