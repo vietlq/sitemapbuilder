@@ -2,8 +2,9 @@
 
 import argparse
 import sys
-from sitemapbuilder.linkvisitor import LinkVisitor
-from sitemapbuilder.linkvisitor import SameHostnameFilter
+from sitemapbuilder import LinkVisitor
+from sitemapbuilder import SameHostnameFilter
+from sitemapbuilder import convert_to_dot
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-d', '--decay', type=int, help='maximum depth',
