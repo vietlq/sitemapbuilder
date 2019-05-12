@@ -3,3 +3,4 @@
 * https://lxml.de/tutorial.html#using-xpath-to-find-text
 * https://docs.python.org/3/tutorial/datastructures.html#sets
 * https://stackoverflow.com/a/55266330/128028
+* https://stackoverflow.com/questions/1112343/how-do-i-capture-sigint-in-python
