@@ -119,9 +119,14 @@ class LinkVisitor():
             self.retries = self.max_retries
             url, decay = self.queue.get()
             print("processing URL [%s] with [decay=%d]" % (url, decay))
-            if decay > 0 and (
-                    (url not in self.recorded) or
-                    (url in self.recorded and self.recorded[url] < decay)):
+            if decay < 1:
+                print("skipped URL [%s] with low [decay=%d]" % (url, decay))
+                self.mutex.release()
+                continue
+            # If a new URL detected, add it
+            # If the same URL has new higher decay, add it
+            if (url not in self.recorded) or \
+                (url in self.recorded and self.recorded[url] < decay):
                 self.recorded[url] = decay
                 next_links = fetch_and_extract_links(url)
                 # Now update the calling map between links
