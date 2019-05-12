@@ -1,9 +1,12 @@
 """Visits links within certain depth and certain (sub)domain."""
 
+import logging
 import time
 from threading import Thread, Lock
 import queue
 import requests
+import socket
+import urllib3
 from .urlhtmlparser import UrlHtmlParser
 from .urlhtmlparser import is_content_type_supported
 from .urlhtmlparser import is_scheme_http_https
@@ -24,13 +27,20 @@ def is_url_content_type_http(url, fetcher=requests):
 
 def fetch_and_extract_links(url, fetcher=requests):
     """Fetch content of a HTML URL and extract hyper links from it"""
-    if not is_url_content_type_http(url):
-        return set()
     try:
+        if not is_url_content_type_http(url):
+            return set()
+        # Fetch & extract links of content-type is supported
         parser = UrlHtmlParser()
         response = fetcher.get(url, allow_redirects=True, timeout=5)
         html_content = response.text
         return parser.parse_html_with_url(html_content, response.url)
+    except (socket.timeout,
+        urllib3.exceptions.ReadTimeoutError,
+        requests.exceptions.ReadTimeout):
+        msg = "Timed out when requesting URL [%s]" % response.url
+        logging.getLogger("LinkVisitor").warning(msg)
+        return set()
     except Exception:
         return set()
 
@@ -56,8 +66,9 @@ def fetch_and_extract_links(url, fetcher=requests):
 
 class LinkVisitor():
     """Encapsulates link visiting crawler"""
-    def __init__(self, seed_url, domain_filter, num_workers=5):
+    def __init__(self, seed_url, decay, domain_filter, num_workers=5):
         self.seed_url = seed_url
+        self.decay = decay
         self.domain_filter = domain_filter
         self.num_workers = num_workers
         self.recorded = set()
@@ -79,10 +90,17 @@ class LinkVisitor():
                 time.sleep(1)
                 continue
             url, decay = self.queue.get()
+            print("processing URL [%s] with [decay=%d]" % (url, decay))
             if decay > 0 and (url not in self.recorded):
                 self.recorded.add(url)
+                for link in fetch_and_extract_links(url):
+                    self.queue.put((link, decay - 1))
+                    print("adding URL [%s] with [decay=%d]" % (link, decay - 1))
             self.mutex.release()
 
     def start(self):
+        self.mutex.acquire()
+        self.queue.put((self.seed_url, self.decay))
+        self.mutex.release()
         for worker_thread in self.threads:
             worker_thread.join()
