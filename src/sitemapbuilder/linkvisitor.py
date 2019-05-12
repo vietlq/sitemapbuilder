@@ -99,9 +99,9 @@ class LinkVisitor():
                 # Avoid adding links with decay = 0
                 if decay > 1:
                     for link in next_links:
-                        self.queue.put((link, decay - 1))
-                        print("adding URL [%s] with [decay=%d]"
-                            % (link, decay - 1))
+                        link_tuple = (link, decay - 1)
+                        self.queue.put(link_tuple)
+                        print("added URL [%s] with [decay=%d]" % link_tuple)
             self.mutex.release()
 
     def start(self):
