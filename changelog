@@ -1,0 +1,91 @@
+Changelog
+=========
+
+
+0.0.3 (2019-05-12)
+------------------
+- 0.0.3. [Le Quoc Viet]
+- Updated readme. [Le Quoc Viet]
+
+
+0.0.2 (2019-05-12)
+------------------
+- Updated setup.py. [Le Quoc Viet]
+- Do not treat page fragments are separate URLs. [Le Quoc Viet]
+- Generate .dot file at the end of crawling. [Le Quoc Viet]
+- Added sitemap_converters.py. [Le Quoc Viet]
+- Export LinkVisitor & SameHostnameFilter. [Le Quoc Viet]
+- Added args for tools/sitemapbuilder. [Le Quoc Viet]
+- README.rst. [Le Quoc Viet]
+- Removed README.rst. [Le Quoc Viet]
+- Ignore build/ dist/ [Le Quoc Viet]
+- Addex tox. [Le Quoc Viet]
+- Updated pip deps. [Le Quoc Viet]
+- Added retries_per_worker=10. [Le Quoc Viet]
+- Updated comments. [Le Quoc Viet]
+- Populated LinkVisitor:sitemap. [Le Quoc Viet]
+- Updated next_links. [Le Quoc Viet]
+- Reduce if wrap level. [Le Quoc Viet]
+- Added LinkVisitor:stop and number of retries for graceful exit. [Le
+  Quoc Viet]
+- Formatting & moved thread creating to LinkVisitor:start. [Le Quoc
+  Viet]
+- Wording. [Le Quoc Viet]
+- Avoid adding links with decay = 0. [Le Quoc Viet]
+- LinkVisitor:recorded now is a map with url & decay. [Le Quoc Viet]
+- LinkVisitor works! Added detailed exception handling. [Le Quoc Viet]
+- Example context with signal handler. [Le Quoc Viet]
+- Catch SIGINT. [Le Quoc Viet]
+- Added skeleton for LinkVisitor. [Le Quoc Viet]
+- Added detailed queue processing. [Le Quoc Viet]
+- Added more notes. [Le Quoc Viet]
+- Added detailed notes how to implement the link visitor and how to
+  store data in memory. [Le Quoc Viet]
+- UrlHtmlParser:parse_html_with_url to return set() data structure. [Le
+  Quoc Viet]
+- Fixed is_url_content_type_http. [Le Quoc Viet]
+- Added is_scheme_http_https check inside is_url_content_type_http. [Le
+  Quoc Viet]
+- Added tests for is_charset_supported and is_content_type_supported.
+  [Le Quoc Viet]
+- Renamed. [Le Quoc Viet]
+- Added is_url_content_type_http and fetch_and_extract_links. [Le Quoc
+  Viet]
+- Added is_charset_supported, split_content_type is_content_type_valid.
+  [Le Quoc Viet]
+- Updated clean in Makefile. [Le Quoc Viet]
+- Ref for .env. [Le Quoc Viet]
+- Added .env for Python. [Le Quoc Viet]
+- More pip packages. [Le Quoc Viet]
+- Updated Makefile. [Le Quoc Viet]
+- Typo. [Le Quoc Viet]
+- Fixed pylint & flake8 warnings. [Le Quoc Viet]
+- Added comments in conftest. [Le Quoc Viet]
+- Added src/conftest.py to fix pytest issues. [Le Quoc Viet]
+- Fixed pylint & flake8 errors. [Le Quoc Viet]
+- Added Makefile. [Le Quoc Viet]
+- Wording. [Le Quoc Viet]
+- Added test_no_duplicated_urls. [Le Quoc Viet]
+- Changed parser.temp_urls from list[] to set{} [Le Quoc Viet]
+- Spacing. [Le Quoc Viet]
+- Added readme. [Le Quoc Viet]
+- Added test_skip_non_http_https. [Le Quoc Viet]
+- Renamed for brevity. [Le Quoc Viet]
+- Refactored test_bad_scheme. [Le Quoc Viet]
+- Added is_scheme_http_https. [Le Quoc Viet]
+- Allow only http/https schemes when calling parse_html_with_url. [Le
+  Quoc Viet]
+- Added docstring. [Le Quoc Viet]
+- Added assertion. [Le Quoc Viet]
+- Added notes with links. [Le Quoc Viet]
+- Implemented urljoin when adding new URLs. TODO: Add test assertion &
+  tox & set of URLs instead of list. [Le Quoc Viet]
+- Added TODO & remove extra logs. [Le Quoc Viet]
+- Fixed pylint & flake8 warnings. [Le Quoc Viet]
+- UrlHtmlParser. [Le Quoc Viet]
+- Added python requests lib. [Le Quoc Viet]
+- Added skeleton for tests/test_monzo_com.py. [Le Quoc Viet]
+- Added monzo.com test. [Le Quoc Viet]
+- Init. [Le Quoc Viet]
+
+
