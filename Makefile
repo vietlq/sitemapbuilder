@@ -1,4 +1,4 @@
-.PHONY: help lint style clean venv
+.PHONY: help lint style clean venv changelog
 
 help:
 	@echo "help             Show this help"
