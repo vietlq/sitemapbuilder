@@ -11,3 +11,4 @@
 * https://stackoverflow.com/a/26539947/128028
 * https://setuptools.readthedocs.io/en/latest/setuptools.html#using-find-packages
 * https://packaging.python.org/guides/single-sourcing-package-version/
+* https://pypi.org/project/gitchangelog/
