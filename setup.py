@@ -10,9 +10,12 @@ import codecs
 with codecs.open('README.rst', 'r', 'utf-8') as fd:
     long_description = fd.read()
 
+# TODO: Simplify & unify versioning
+pkg_version = '0.0.4'
+
 setup(
     name='sitemapbuilder',
-    version='0.0.3',
+    version=pkg_version,
     description='Simple sitemap builder',
     long_description=long_description,
     author='Viet Le',
