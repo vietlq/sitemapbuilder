@@ -49,7 +49,6 @@ Upcoming features
 * Allow web links from a list of domains.
 * Allow web links matching a pattern.
 * Add an option for hierarchical sitemap instead of directed graph.
-* Use PriorityQueue instead of Queue to process links with higher decay
-first.
+* Use PriorityQueue instead of Queue to process links with higher decay first.
 * Fine-graned info, warn and error logging.
 * Pass seed links from a file.
