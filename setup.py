@@ -11,7 +11,7 @@ with codecs.open('README.rst', 'r', 'utf-8') as fd:
     long_description = fd.read()
 
 # TODO: Simplify & unify versioning
-pkg_version = '0.0.4'
+pkg_version = '0.0.5'
 
 setup(
     name='sitemapbuilder',
