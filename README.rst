@@ -50,3 +50,5 @@ Upcoming features
 * Use PriorityQueue instead of Queue to process links with higher decay first.
 * Fine-graned info, warn and error logging.
 * Pass seed links from a file.
+* Save to and resume from a DB/persistent data source.
+* Faster concurrency and better performance with asyncio.
