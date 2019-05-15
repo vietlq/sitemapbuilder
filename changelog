@@ -2,8 +2,15 @@ Changelog
 =========
 
 
-0.0.5 (2019-05-13)
+0.0.6 (2019-05-15)
 ------------
+- More features. [Le Quoc Viet]
+- Fixed readme; YAPF against python scripts. [Le Quoc Viet]
+
+
+0.0.5 (2019-05-13)
+------------------
+- Version 0.0.5. [Le Quoc Viet]
 - Typo. [Le Quoc Viet]
 - 0.0.5. [Le Quoc Viet]
 - 0.0.5. [Le Quoc Viet]
