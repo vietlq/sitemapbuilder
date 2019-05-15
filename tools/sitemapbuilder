@@ -7,12 +7,11 @@ from sitemapbuilder import SameHostnameFilter
 from sitemapbuilder import convert_to_dot
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-d', '--decay', type=int, help='maximum depth',
-                    default=2)
-parser.add_argument('-u', '--url', type=str, help='seed URL to fetch',
-                    required=True)
-parser.add_argument('-o', '--out-file', type=str, help='output file name',
-                    required=True)
+parser.add_argument('-d', '--decay', type=int, help='maximum depth', default=2)
+parser.add_argument(
+    '-u', '--url', type=str, help='seed URL to fetch', required=True)
+parser.add_argument(
+    '-o', '--out-file', type=str, help='output file name', required=True)
 
 args = parser.parse_args()
 

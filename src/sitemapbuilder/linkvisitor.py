@@ -21,7 +21,8 @@ def is_url_content_type_http(url, fetcher=requests):
     result = fetcher.head(url, allow_redirects=True, timeout=5)
     content_type_keys = [
         key for key in result.headers.keys()
-        if key.strip().lower() == 'content-type']
+        if key.strip().lower() == 'content-type'
+    ]
     if not content_type_keys:
         return False
     return is_content_type_supported(result.headers[content_type_keys[0]])
@@ -37,14 +38,14 @@ def fetch_and_extract_links(url, fetcher=requests):
         response = fetcher.get(url, allow_redirects=True, timeout=5)
         html_content = response.text
         return parser.parse_html_with_url(html_content, response.url)
-    except (socket.timeout,
-            urllib3.exceptions.ReadTimeoutError,
+    except (socket.timeout, urllib3.exceptions.ReadTimeoutError,
             requests.exceptions.ReadTimeout):
         msg = "Timed out when requesting URL [%s]" % response.url
         logging.getLogger("LinkVisitor").warning(msg)
         return set()
     except Exception:
         return set()
+
 
 # NOTE: The following data structures are used:
 # 1. recorded - set of recorded links to avoid double fetching
@@ -68,6 +69,7 @@ def fetch_and_extract_links(url, fetcher=requests):
 
 class SameHostnameFilter():
     """Only passes URLs with the same predefined hostname"""
+
     def __init__(self, seed_url):
         self.seed_url = seed_url
         hostname = str(urlparse(seed_url).hostname)
@@ -91,7 +93,12 @@ class SameHostnameFilter():
 
 class LinkVisitor():
     """Encapsulates link visiting crawler"""
-    def __init__(self, seed_url, decay, domain_filter, num_workers=5,
+
+    def __init__(self,
+                 seed_url,
+                 decay,
+                 domain_filter,
+                 num_workers=5,
                  retries_per_worker=10):
         assert num_workers > 0
         assert retries_per_worker > 1
@@ -160,7 +167,7 @@ class LinkVisitor():
         # Create the threads
         self.threads = []
         for _ in range(self.num_workers):
-            worker_thread = Thread(target=self.do_work, args=(self,))
+            worker_thread = Thread(target=self.do_work, args=(self, ))
             worker_thread.start()
             self.threads.append(worker_thread)
         # Wait for the threads to finish

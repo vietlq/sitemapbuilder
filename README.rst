@@ -30,17 +30,15 @@ Some websites have strong protection and the tool will not work for them:
 Highlights
 ==========
 
-1. Generate Graphviz `.dot` file showing directed links between pages. One
-can generate PNG/PDF and other image/document formats.
-2. Have `configurable decay` (maximum depth) to avoid abuse.
-3. Visit web link within the same hostname by default.
-4. Use `5 threads` by default and times out after `10 seconds`.
-5. Timeout after `5 seconds` when fetching a URL.
-6. Handle timeout exceptions when querying a website.
-7. Send a `HTTP HEAD` request and verify that `Content-Type` is `text/html`
-and `charset` is either `UTF-8` or `US-ASCII`.
-8. Have a map of visited URLs to avoid revisiting them.
-9. Follow HTTP redirects.
+#. Generate Graphviz `.dot` file showing directed links between pages. One can generate PNG/PDF and other image/document formats.
+#. Have `configurable decay` (maximum depth) to avoid abuse.
+#. Visit web link within the same hostname by default.
+#. Use `5 threads` by default and times out after `10 seconds`.
+#. Timeout after `5 seconds` when fetching a URL.
+#. Handle timeout exceptions when querying a website.
+#. Send a `HTTP HEAD` request and verify that `Content-Type` is `text/html` and `charset` is either `UTF-8` or `US-ASCII`.
+#. Have a map of visited URLs to avoid revisiting them.
+#. Follow HTTP redirects.
 
 Upcoming features
 =================
