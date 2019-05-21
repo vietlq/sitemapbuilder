@@ -2,11 +2,18 @@
 
 import argparse
 import sys
+import sitemapbuilder
 from sitemapbuilder import LinkVisitor
 from sitemapbuilder import SameHostnameFilter
 from sitemapbuilder import convert_to_dot
 
 parser = argparse.ArgumentParser()
+parser.add_argument(
+    '-v',
+    '--version',
+    action='version',
+    version='sitemapbuilder version %s' % sitemapbuilder.__version__,
+    help='print version')
 parser.add_argument('-d', '--decay', type=int, help='maximum depth', default=2)
 parser.add_argument(
     '-u', '--url', type=str, help='seed URL to fetch', required=True)

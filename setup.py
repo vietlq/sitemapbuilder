@@ -6,12 +6,12 @@
 
 from setuptools import setup, find_packages
 import codecs
+import sitemapbuilder
 
 with codecs.open('README.rst', 'r', 'utf-8') as fd:
     long_description = fd.read()
 
-# TODO: Simplify & unify versioning
-pkg_version = '0.0.6'
+pkg_version = sitemapbuilder.__version__
 
 setup(
     name='sitemapbuilder',
@@ -22,8 +22,7 @@ setup(
     author_email='vietlq85@gmail.com',
     url='https://github.com/vietlq/sitemapbuilder',
     install_requires=['requests'],
-    package_dir={'': 'src'},
-    packages=find_packages(where='src'),
+    packages=find_packages(),
     scripts=['tools/sitemapbuilder'],
     keywords=['sitemapbuilder sitemap builder http'],
     classifiers=[
